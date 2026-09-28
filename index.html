@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TeamMatch | Student Talent Discovery, Peer Squads & ATS Recruiting</title>
+  <meta name="description" content="Discover verified student talent, join collaborative peer squads, track technology internships, and build ATS-friendly resumes on TeamMatch.">
+  
+  <!-- Modern Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/recruiter.css">
+  <link rel="stylesheet" href="css/resume.css">
+  <link rel="stylesheet" href="css/modals.css">
+</head>
+<body>
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="app-header" role="banner">
+    <div class="app-container">
+      <div class="header-inner">
+        <!-- Logo & Brand Identity -->
+        <a href="#discover" class="brand-identity" id="brand-home-link" aria-label="TeamMatch Home">
+          <div class="brand-logo-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <div class="brand-text-block">
+            <span class="brand-title">
+              TeamMatch
+            </span>
+            <span class="brand-subtitle">Student Talent &amp; Sourcing Platform</span>
+          </div>
+        </a>
+
+        <!-- Global Search Input with Keyboard Shortcut -->
+        <div class="header-search" role="search">
+          <div class="search-input-wrap">
+            <svg class="search-icon-left" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              id="global-search-input" 
+              class="search-input" 
+              placeholder="Search students, skills, states, internships..." 
+              aria-label="Global search across students, skills, and internships"
+            >
+            <kbd class="search-kbd-shortcut" title="Press / to search">/</kbd>
+          </div>
+        </div>
+
+        <!-- Primary Destination Tabs (Desktop) -->
+        <nav class="nav-tabs" aria-label="Primary destinations">
+          <button class="nav-tab-btn active" data-tab="discover" id="nav-btn-discover">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+            </svg>
+            <span>Discover</span>
+          </button>
+
+          <button class="nav-tab-btn" data-tab="leaderboards" id="nav-btn-leaderboards">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+              <path d="M4 22h16"></path>
+              <path d="M10 14.66V17c0 .55-.45 1-1 1H7v4h10v-4h-2c-.55 0-1-.45-1-1v-2.34"></path>
+              <path d="M6 2h12v7a6 6 0 0 1-12 0V2z"></path>
+            </svg>
+            <span>Leaderboards</span>
+          </button>
+
+          <button class="nav-tab-btn" data-tab="internships" id="nav-btn-internships">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+            </svg>
+            <span>Internships</span>
+            <span class="tab-pill-badge" id="internships-badge-count">8</span>
+          </button>
+
+          <button class="nav-tab-btn" data-tab="squads" id="nav-btn-squads">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Peer Squads</span>
+          </button>
+
+          <button class="nav-tab-btn" data-tab="messages" id="nav-btn-messages">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span>Messages</span>
+            <span class="tab-pill-badge" id="unread-messages-count" style="background-color: var(--color-primary-600); color: #fff;">1</span>
+          </button>
+        </nav>
+
+        <!-- Header Actions: Recruiter Mode, ATS Resume, User Avatar -->
+        <div class="header-actions">
+          <!-- Recruiter Mode Toggle Switch -->
+          <div class="recruiter-mode-toggle" id="recruiter-toggle-container" title="Switch between Student Peer View and Recruiter Pipeline Mode">
+            <span class="recruiter-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="22" y1="12" x2="18" y2="12"></line>
+                <line x1="6" y1="12" x2="2" y2="12"></line>
+                <line x1="12" y1="6" x2="12" y2="2"></line>
+                <line x1="12" y1="22" x2="12" y2="18"></line>
+              </svg>
+              Recruiter Mode
+            </span>
+            <label class="switch" aria-label="Toggle Recruiter Mode">
+              <input type="checkbox" id="recruiter-mode-checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <!-- ATS Resume Quick Action -->
+          <button class="btn-ats-header" id="btn-header-ats" title="Open ATS Resume Builder & Printable Preview">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span>My ATS Resume</span>
+          </button>
+
+          <!-- Current Student Avatar / Profile Access -->
+          <button class="user-profile-btn" id="btn-user-profile-header" aria-label="Open Signed-in Student Profile & Stats">
+            <div class="avatar-badge" id="header-avatar-initials">AS</div>
+            <span class="user-profile-name" id="header-user-name">Aarav Sharma</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-slate-400);" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+
+          <!-- Settings Dropdown Wrapper (Top Right) -->
+          <div class="settings-dropdown-wrapper">
+            <button class="btn btn-secondary btn-icon" id="btn-settings-header" aria-label="Settings and Preferences" title="Settings">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </button>
+
+            <!-- Settings Menu Popup -->
+            <div class="settings-dropdown-menu" id="settings-dropdown-menu" role="menu" aria-label="Settings options">
+              <div class="settings-dropdown-header">
+                <span class="settings-dropdown-title">Account &amp; Preferences</span>
+                <span style="font-size: 0.725rem; color: var(--color-primary-700); font-weight: 600;" id="settings-active-state-text">Active State: Maharashtra</span>
+              </div>
+              <div class="settings-dropdown-items">
+                <!-- State Change Button -->
+                <button class="settings-dropdown-item" id="btn-setting-change-state" role="menuitem">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-primary-600);" aria-hidden="true">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  <div>
+                    <div style="font-weight: 700; color: var(--color-slate-900);">Change State / Region</div>
+                    <div style="font-size: 0.725rem; color: var(--text-muted);">Switch state for feed &amp; rankings</div>
+                  </div>
+                </button>
+
+                <!-- Profile Edit Button -->
+                <button class="settings-dropdown-item" id="btn-setting-edit-profile" role="menuitem">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-indigo-600);" aria-hidden="true">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  <div>
+                    <div style="font-weight: 600; color: var(--color-slate-900);">Edit Student Profile</div>
+                    <div style="font-size: 0.725rem; color: var(--text-muted);">Update CGPA, skills, bio</div>
+                  </div>
+                </button>
+
+                <div style="border-top: 1px solid var(--border-subtle); margin: 0.25rem 0;"></div>
+
+                <!-- Log Out Button -->
+                <button class="settings-dropdown-item text-danger" id="btn-setting-logout" role="menuitem">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #dc2626;" aria-hidden="true">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                  </svg>
+                  <div>
+                    <div style="font-weight: 700; color: #dc2626;">Log Out</div>
+                    <div style="font-size: 0.725rem; color: #ef4444;">Sign out of current account</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Sub-Navigation Bar -->
+    <div class="mobile-nav-bar" role="navigation" aria-label="Mobile navigation">
+      <button class="mobile-nav-tab active" data-tab="discover">Discover</button>
+      <button class="mobile-nav-tab" data-tab="leaderboards">Leaderboards</button>
+      <button class="mobile-nav-tab" data-tab="internships">Internships (8)</button>
+      <button class="mobile-nav-tab" data-tab="squads">Peer Squads</button>
+      <button class="mobile-nav-tab" data-tab="messages">Messages</button>
+      <button class="mobile-nav-tab" data-tab="resume">My ATS Resume</button>
+      <button class="mobile-nav-tab" data-tab="profile">My Profile</button>
+    </div>
+  </header>
+
+  <!-- Recruiter Pipeline Status & Funnel Bar (Appears when Recruiter Mode is Active) -->
+  <aside class="recruiter-funnel-bar" id="recruiter-funnel-bar" aria-label="Recruiter Talent Pipeline">
+    <div class="app-container">
+      <div class="funnel-bar-inner">
+        <div class="funnel-title-area">
+          <span class="funnel-badge-live">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            Recruiter Mode Active
+          </span>
+          <span class="funnel-title">Talent Sourcing Pipeline</span>
+        </div>
+
+        <div class="funnel-stages-row" role="tablist" aria-label="Recruiter pipeline stages">
+          <button class="funnel-stage-btn active" data-stage="All Candidates">
+            <span>All Candidates</span>
+            <span class="funnel-counter" id="stage-count-all">12</span>
+          </button>
+          <button class="funnel-stage-btn" data-stage="Shortlisted">
+            <span>Shortlisted</span>
+            <span class="funnel-counter" id="stage-count-shortlisted">3</span>
+          </button>
+          <button class="funnel-stage-btn" data-stage="Contacted">
+            <span>Contacted</span>
+            <span class="funnel-counter" id="stage-count-contacted">1</span>
+          </button>
+          <button class="funnel-stage-btn" data-stage="Interviewing">
+            <span>Interviewing</span>
+            <span class="funnel-counter" id="stage-count-interviewing">1</span>
+          </button>
+          <button class="funnel-stage-btn" data-stage="Offer">
+            <span>Offer</span>
+            <span class="funnel-counter" id="stage-count-offer">1</span>
+          </button>
+        </div>
+
+        <div style="font-size: 0.775rem; color: #94a3b8; display: flex; align-items: center; gap: 0.5rem;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span>Candidate data shown complies with student sharing consents</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Container -->
+  <main id="main-content">
+    <div class="app-container">
+
+      <!-- Destination 1: Discover Profiles -->
+      <section id="tab-discover" class="tab-pane active" aria-labelledby="discover-heading">
+        <h1 class="sr-only" id="discover-heading">Discover Student Profiles and Matches</h1>
+        
+        <div class="discover-layout">
+          <!-- Left Column: Signed-In Student Summary Card & Quick Links -->
+          <aside class="discover-sidebar-left" aria-label="Student Profile Snapshot">
+            <div class="card card-interactive" id="signed-in-student-card">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Squad Quick Status Widget -->
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title" style="font-size: 0.95rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-primary-600);" aria-hidden="true">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                  My Active Squads
+                </h2>
+                <button class="btn btn-ghost btn-xs" id="widget-view-all-squads">View All</button>
+              </div>
+              <div class="card-body" id="widget-active-squads-list">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </aside>
+
+          <!-- Center Column: Multi-Filter Toolbar & Student Cards Feed -->
+          <div class="discover-main-col">
+            <!-- Filter Bar Component -->
+            <div class="filter-bar" role="search" aria-label="Filter student profiles">
+              <div class="filter-bar-header">
+                <div class="filter-count-label">
+                  <span id="discover-results-count">12</span> Candidates Found
+                </div>
+                <button class="btn btn-ghost btn-sm" id="btn-reset-filters" style="color: var(--color-primary-700);">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="1 4 1 10 7 10"></polyline>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                  </svg>
+                  Reset Filters
+                </button>
+              </div>
+
+              <!-- Filter Dropdowns Row -->
+              <div class="filter-controls-row">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="filter-state" class="form-label">State / Region</label>
+                  <select id="filter-state" class="form-select">
+                    <option value="ALL">All States (All India)</option>
+                    <option value="Andhra Pradesh (Vijayawada)">Andhra Pradesh (Vijayawada)</option>
+                    <option value="Karnataka">Karnataka (Bengaluru)</option>
+                    <option value="Maharashtra">Maharashtra (Mumbai / Pune)</option>
+                    <option value="Delhi NCR">Delhi NCR</option>
+                    <option value="Telangana">Telangana (Hyderabad)</option>
+                    <option value="Tamil Nadu">Tamil Nadu (Chennai)</option>
+                    <option value="West Bengal">West Bengal (Kolkata)</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                  </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="filter-major" class="form-label">Major / Field</label>
+                  <select id="filter-major" class="form-select">
+                    <option value="ALL">All Majors</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Software Engineering">Software Engineering</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Electrical & Computer Engineering">ECE / Hardware</option>
+                    <option value="Design">Product Design / HCI</option>
+                    <option value="Cybersecurity">Cybersecurity</option>
+                    <option value="Bioinformatics">Bioinformatics</option>
+                    <option value="Robotics">Robotics</option>
+                  </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="filter-skill" class="form-label">Primary Skill / Tech</label>
+                  <select id="filter-skill" class="form-select">
+                    <option value="ALL">All Technologies</option>
+                    <option value="Python">Python</option>
+                    <option value="TypeScript">TypeScript</option>
+                    <option value="React">React</option>
+                    <option value="Go">Go</option>
+                    <option value="Rust">Rust</option>
+                    <option value="C++">C++</option>
+                    <option value="PyTorch">PyTorch / ML</option>
+                    <option value="Kubernetes">Kubernetes / Cloud</option>
+                    <option value="Figma">Figma / UI</option>
+                  </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label for="filter-grad-year" class="form-label">Graduation Year</label>
+                  <select id="filter-grad-year" class="form-select">
+                    <option value="ALL">All Classes</option>
+                    <option value="2025">Class of 2025 (Seniors / New Grad)</option>
+                    <option value="2026">Class of 2026 (Juniors / Interns)</option>
+                    <option value="2027">Class of 2027 (Sophomores / Co-ops)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Student Cards List -->
+            <div id="discover-students-container" style="display: flex; flex-direction: column; gap: 1rem;">
+              <!-- Student cards populated via JS -->
+            </div>
+          </div>
+
+          <!-- Right Column: Top Internships & Leaderboards Summary Widgets -->
+          <aside class="discover-sidebar-right" aria-label="Quick Highlights">
+            <!-- Top Internships Widget -->
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title" style="font-size: 0.95rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-primary-600);" aria-hidden="true">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                  </svg>
+                  Featured Internships
+                </h2>
+                <button class="btn btn-ghost btn-xs" id="widget-view-all-internships">View All</button>
+              </div>
+              <div class="card-body" id="widget-top-internships-list" style="padding: 0.75rem 1rem;">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+            <!-- National Leaderboard Summary Widget -->
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title" style="font-size: 0.95rem;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-amber-600);" aria-hidden="true">
+                    <circle cx="12" cy="8" r="7"></circle>
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                  </svg>
+                  State Rankings Pulse
+                </h2>
+                <button class="btn btn-ghost btn-xs" id="widget-view-leaderboards">Explore</button>
+              </div>
+              <div class="card-body" id="widget-leaderboard-summary">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+            <!-- Transparent Data Trust Callout -->
+            <div style="background-color: var(--color-slate-100); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.85rem; font-size: 0.75rem; color: var(--text-muted); line-height: 1.45;">
+              <strong style="color: var(--color-slate-700); display: block; margin-bottom: 0.25rem;">Student Privacy & Provenance</strong>
+              Profiles and benchmark rankings represent simulated educational test data. Verified checkmarks require institutional or platform test verification.
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Destination 2: State Leaderboards -->
+      <section id="tab-leaderboards" class="tab-pane" aria-labelledby="leaderboards-heading">
+        <h1 class="sr-only" id="leaderboards-heading">Student State & National Leaderboards</h1>
+        <div id="leaderboards-container">
+          <!-- Rendered via JS -->
+        </div>
+      </section>
+
+      <!-- Destination 3: Technology Internships & Co-ops -->
+      <section id="tab-internships" class="tab-pane" aria-labelledby="internships-heading">
+        <h1 class="sr-only" id="internships-heading">Technology Internships and Co-ops</h1>
+        <div id="internships-container">
+          <!-- Rendered via JS -->
+        </div>
+      </section>
+
+      <!-- Destination 4: Peer Squads -->
+      <section id="tab-squads" class="tab-pane" aria-labelledby="squads-heading">
+        <h1 class="sr-only" id="squads-heading">Peer Squads and Team Formation</h1>
+        <div id="squads-container">
+          <!-- Rendered via JS -->
+        </div>
+      </section>
+
+      <!-- Destination 5: Messages & Networking Inbox -->
+      <section id="tab-messages" class="tab-pane" aria-labelledby="messages-heading">
+        <h1 class="sr-only" id="messages-heading">Messages and Networking Inbox</h1>
+        <div id="messages-container">
+          <!-- Rendered via JS -->
+        </div>
+      </section>
+
+      <!-- Destination 6: My ATS Resume Builder & Printable Preview -->
+      <section id="tab-resume" class="tab-pane" aria-labelledby="resume-heading">
+        <h1 class="sr-only" id="resume-heading">ATS Resume Builder and Machine-Readable Preview</h1>
+        <div id="resume-container">
+          <!-- Rendered via JS -->
+        </div>
+      </section>
+
+      <!-- Destination 7: Profile and Student Stats -->
+      <section id="tab-profile" class="tab-pane" aria-labelledby="profile-heading">
+        <h1 class="sr-only" id="profile-heading">Signed-in Student Profile and Career Readiness Metrics</h1>
+        <div id="profile-container">
+          <!-- Rendered via JS -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Recruiter Floating Comparison Dock (Active when candidates are selected for comparison) -->
+  <div class="recruiter-compare-dock" id="recruiter-compare-dock" role="region" aria-label="Candidate comparison dock">
+    <span class="dock-text">
+      <strong id="compare-candidates-count">0</strong> candidates selected for comparison
+    </span>
+    <button class="btn btn-primary btn-sm" id="btn-open-compare-modal">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M16 3h5v5"></path>
+        <path d="M4 20L21 3"></path>
+        <path d="M21 16v5h-5"></path>
+        <path d="M15 15l6 6"></path>
+        <path d="M4 4l5 5"></path>
+      </svg>
+      Compare Side-by-Side
+    </button>
+    <button class="btn btn-ghost btn-sm" id="btn-clear-compare" style="color: #cbd5e1;">Clear</button>
+  </div>
+
+  <!-- Accessible Modals Root -->
+  <div id="modals-root">
+    <!-- Modal: Edit Student Profile -->
+    <div class="modal-backdrop" id="modal-edit-profile" role="dialog" aria-modal="true" aria-labelledby="edit-profile-title">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <h2 class="modal-title" id="edit-profile-title">Edit Student Profile</h2>
+            <p class="modal-subtitle">Update your career signals, university details, skills, and privacy controls</p>
+          </div>
+          <button class="modal-close-btn" data-close-modal aria-label="Close dialog">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <div class="modal-nav-tabs" role="tablist">
+          <button class="modal-nav-btn active" data-modaltab="general">General & Contact</button>
+          <button class="modal-nav-btn" data-modaltab="academic">Academic & GPA</button>
+          <button class="modal-nav-btn" data-modaltab="skills">Skills & Bio</button>
+          <button class="modal-nav-btn" data-modaltab="preferences">Availability</button>
+        </div>
+
+        <form id="form-edit-profile" class="modal-body">
+          <!-- Populated via JS -->
+        </form>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-close-modal type="button">Cancel</button>
+          <button class="btn btn-primary" id="btn-save-profile" type="button">Save Profile Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: View Student Full Details -->
+    <div class="modal-backdrop" id="modal-student-detail" role="dialog" aria-modal="true" aria-labelledby="student-detail-name">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <h2 class="modal-title" id="student-detail-name">Student Profile</h2>
+            <p class="modal-subtitle" id="student-detail-sub">Candidate Information & Verified Achievements</p>
+          </div>
+          <button class="modal-close-btn" data-close-modal aria-label="Close dialog">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body" id="student-detail-content">
+          <!-- Populated via JS -->
+        </div>
+        <div class="modal-footer" id="student-detail-footer">
+          <!-- Dynamic action buttons (Connect, Shortlist, Close) -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Transparent Ranking Criteria Explainer -->
+    <div class="modal-backdrop" id="modal-ranking-criteria" role="dialog" aria-modal="true" aria-labelledby="criteria-title">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <h2 class="modal-title" id="criteria-title">Leaderboard Ranking Methodology</h2>
+            <p class="modal-subtitle">Transparent composite formula & data freshness disclosure</p>
+          </div>
+          <button class="modal-close-btn" data-close-modal aria-label="Close dialog">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body" id="ranking-criteria-content">
+          <!-- Populated via JS -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" data-close-modal>Understood</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Internship Application & ATS Resume Submitter -->
+    <div class="modal-backdrop" id="modal-apply-internship" role="dialog" aria-modal="true" aria-labelledby="apply-internship-title">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <h2 class="modal-title" id="apply-internship-title">Apply for Internship</h2>
+            <p class="modal-subtitle" id="apply-internship-company">Submitting application via TeamMatch ATS Integration</p>
+          </div>
+          <button class="modal-close-btn" data-close-modal aria-label="Close dialog">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body" id="apply-internship-body">
+          <!-- Populated via JS -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-close-modal>Cancel</button>
+          <button class="btn btn-primary" id="btn-submit-application">Submit Application</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Create New Peer Squad -->
+    <div class="modal-backdrop" id="modal-create-squad" role="dialog" aria-modal="true" aria-labelledby="create-squad-title">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <h2 class="modal-title" id="create-squad-title">Create a Peer Squad</h2>
+            <p class="modal-subtitle">Assemble teammates for hackathons, side-projects, or study groups</p>
+          </div>
+          <button class="modal-close-btn" data-close-modal aria-label="Close dialog">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <form id="form-create-squad" class="modal-body">
+          <!-- Populated via JS -->
+        </form>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-close-modal type="button">Cancel</button>
+          <button class="btn btn-primary" id="btn-submit-create-squad" type="button">Publish Squad</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Recruiter Candidate Comparison Side-by-Side -->
+    <div class="modal-backdrop" id="modal-candidate-compare" role="dialog" aria-modal="true" aria-labelledby="compare-modal-title">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <h2 class="modal-title" id="compare-modal-title">Candidate Comparison Matrix</h2>
+            <p class="modal-subtitle">Side-by-side evaluation of skills, verified signals, and pipeline status</p>
+          </div>
+          <button class="modal-close-btn" data-close-modal aria-label="Close dialog">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body" id="candidate-compare-body" style="padding: 1rem;">
+          <!-- Populated via JS -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-close-modal>Close Comparison</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Quick State / Region Change -->
+    <div class="modal-backdrop" id="modal-state-change" role="dialog" aria-modal="true" aria-labelledby="state-change-title">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <h2 class="modal-title" id="state-change-title">Change Active State / Region</h2>
+            <p class="modal-subtitle">Switch your student location to see regional leaderboards and local matches</p>
+          </div>
+          <button class="modal-close-btn" data-close-modal aria-label="Close dialog">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div style="font-size: 0.825rem; color: var(--color-slate-700); margin-bottom: 0.5rem;">
+            Select your preferred state in India:
+          </div>
+          <div class="state-selection-grid" id="quick-state-selector-container">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-close-modal>Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Log Out Confirmation -->
+    <div class="modal-backdrop" id="modal-logout" role="dialog" aria-modal="true" aria-labelledby="logout-dialog-title">
+      <div class="modal-dialog" style="max-width: 440px;">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <h2 class="modal-title" id="logout-dialog-title">Confirm Sign Out</h2>
+            <p class="modal-subtitle">Sign out of TeamMatch platform</p>
+          </div>
+          <button class="modal-close-btn" data-close-modal aria-label="Close dialog">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="modal-body" style="text-align: center; padding: 1.5rem;">
+          <div style="width: 3.5rem; height: 3.5rem; border-radius: 50%; background-color: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </div>
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--color-slate-900);">Are you sure you want to log out?</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.35rem; line-height: 1.45;">
+            You can sign back in at any time or explore in Guest Preview mode.
+          </p>
+        </div>
+        <div class="modal-footer" style="justify-content: center; gap: 1rem;">
+          <button class="btn btn-secondary" data-close-modal>Stay Signed In</button>
+          <button class="btn btn-primary" id="btn-confirm-logout" style="background-color: #dc2626;">Log Out Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Footer -->
+  <footer class="app-footer" role="contentinfo">
+    <div class="app-container">
+      <div class="app-footer-inner">
+        <div>
+          <strong>TeamMatch Platform</strong> &bull; Student Talent Discovery & Peer Networking.
+          <div style="font-size: 0.775rem; color: var(--text-muted); margin-top: 0.2rem;">
+            Demo Mode: Benchmarks and student profiles are simulated for educational demonstration.
+          </div>
+        </div>
+        <div class="footer-links">
+          <button id="footer-btn-methodology">Ranking Methodology</button>
+          <button id="footer-btn-ats-guide">ATS Formatting Standard</button>
+          <button id="footer-btn-privacy">Student Privacy & Consent</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Modular Logic Scripts -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

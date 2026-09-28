@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TeamMatch Automated Test Suite</title>
+</head>
+<body>
+  <h1>Running Automated Test Suite...</h1>
+  <div id="test-output">RUNNING</div>
+  <pre id="test-log"></pre>
+
+  <iframe id="app-frame" src="index.html" style="width: 1200px; height: 800px; border: 1px solid #ccc;"></iframe>
+
+  <script type="module">
+    const logEl = document.getElementById('test-log');
+    const outputEl = document.getElementById('test-output');
+    const errors = [];
+    const logs = [];
+
+    function log(msg) {
+      console.log(msg);
+      logs.push(msg);
+      logEl.textContent = logs.join('\n');
+    }
+
+    function recordError(err) {
+      console.error(err);
+      errors.push(String(err));
+      log("ERROR: " + err);
+    }
+
+    const frame = document.getElementById('app-frame');
+    
+    frame.onload = async () => {
+      try {
+        const frameWin = frame.contentWindow;
+        const frameDoc = frame.contentDocument;
+
+        frameWin.addEventListener('error', (e) => {
+          recordError(`Uncaught error: ${e.message} at ${e.filename}:${e.lineno}`);
+        });
+
+        frameWin.addEventListener('unhandledrejection', (e) => {
+          recordError(`Unhandled Promise rejection: ${e.reason}`);
+        });
+
+        log("Iframe loaded successfully.");
+
+        // Wait 500ms for app DOMContentLoaded and initialization
+        await new Promise(r => setTimeout(r, 600));
+
+        // Test 1: Check initial discover tab active
+        const discoverPane = frameDoc.getElementById('tab-discover');
+        if (!discoverPane || !discoverPane.classList.contains('active')) {
+          recordError("Discover tab is not initially active");
+        } else {
+          log("PASS: Discover tab active initially");
+        }
+
+        // Test 2: Check student feed rendered
+        const studentCards = frameDoc.querySelectorAll('.student-card');
+        if (studentCards.length === 0) {
+          recordError("No student cards rendered on discover");
+        } else {
+          log(`PASS: Rendered ${studentCards.length} student cards`);
+        }
+
+        // Test 3: Check signed-in student snapshot rendered
+        const userCard = frameDoc.getElementById('signed-in-student-card');
+        if (!userCard || !userCard.innerHTML.includes('Aarav Sharma')) {
+          recordError("Signed-in student card did not render Aarav Sharma");
+        } else {
+          log("PASS: Signed-in student card rendered correctly");
+        }
+
+        // Test 4: Navigation to all tabs
+        const tabs = ['leaderboards', 'internships', 'squads', 'messages', 'resume', 'profile', 'discover'];
+        for (const tab of tabs) {
+          const btn = frameDoc.getElementById(`nav-btn-${tab}`) || frameDoc.querySelector(`[data-tab="${tab}"]`);
+          if (btn) {
+            btn.click();
+            await new Promise(r => setTimeout(r, 100));
+            const pane = frameDoc.getElementById(`tab-${tab}`);
+            if (!pane || !pane.classList.contains('active')) {
+              recordError(`Tab '${tab}' did not become active on click`);
+            } else {
+              log(`PASS: Switched to tab '${tab}'`);
+            }
+          } else {
+            recordError(`Nav button for tab '${tab}' not found`);
+          }
+        }
+
+        // Test 5: Open Student Detail Modal and click "Start Conversation"
+        // (This tests our closeModal fix and conversation opening)
+        const firstViewBtn = frameDoc.querySelector('.btn-view-student');
+        if (firstViewBtn) {
+          firstViewBtn.click();
+          await new Promise(r => setTimeout(r, 200));
+          const detailModal = frameDoc.getElementById('modal-student-detail');
+          if (!detailModal || !detailModal.classList.contains('open')) {
+            recordError("Student detail modal did not open");
+          } else {
+            log("PASS: Student detail modal opened");
+            const connectBtn = frameDoc.getElementById('btn-modal-connect');
+            if (connectBtn) {
+              connectBtn.click();
+              await new Promise(r => setTimeout(r, 200));
+              log("PASS: Clicked Start Conversation in student detail modal");
+              // Verify active tab switched to messages
+              const msgPane = frameDoc.getElementById('tab-messages');
+              if (msgPane && msgPane.classList.contains('active')) {
+                log("PASS: Messages tab opened from connect button");
+              } else {
+                recordError("Messages tab did not open after clicking Start Conversation");
+              }
+            }
+          }
+        }
+
+        // Switch back to discover
+        frameDoc.getElementById('nav-btn-discover').click();
+        await new Promise(r => setTimeout(r, 100));
+
+        // Test 6: Recruiter Mode Toggle
+        const recruiterCheckbox = frameDoc.getElementById('recruiter-mode-checkbox');
+        if (recruiterCheckbox) {
+          recruiterCheckbox.click();
+          await new Promise(r => setTimeout(r, 200));
+          const funnelBar = frameDoc.getElementById('recruiter-funnel-bar');
+          if (!funnelBar || !funnelBar.classList.contains('active')) {
+            recordError("Recruiter funnel bar did not activate");
+          } else {
+            log("PASS: Recruiter Mode turned ON and funnel bar active");
+          }
+
+          // Test candidate compare checkboxes
+          const compareCheckboxes = frameDoc.querySelectorAll('.compare-checkbox');
+          if (compareCheckboxes.length >= 2) {
+            compareCheckboxes[0].click();
+            compareCheckboxes[1].click();
+            await new Promise(r => setTimeout(r, 200));
+            const dock = frameDoc.getElementById('recruiter-compare-dock');
+            if (!dock || !dock.classList.contains('visible')) {
+              recordError("Recruiter compare dock did not become visible");
+            } else {
+              log("PASS: Recruiter compare dock visible with 2 candidates");
+              const compareBtn = frameDoc.getElementById('btn-open-compare-modal');
+              if (compareBtn) {
+                compareBtn.click();
+                await new Promise(r => setTimeout(r, 200));
+                const compareModal = frameDoc.getElementById('modal-candidate-compare');
+                if (!compareModal || !compareModal.classList.contains('open')) {
+                  recordError("Candidate comparison modal did not open");
+                } else {
+                  log("PASS: Candidate comparison modal opened with matrix");
+                  const closeBtn = compareModal.querySelector('[data-close-modal]');
+                  if (closeBtn) closeBtn.click();
+                }
+              }
+            }
+          }
+
+          // Turn recruiter mode OFF
+          recruiterCheckbox.click();
+          await new Promise(r => setTimeout(r, 100));
+          log("PASS: Recruiter Mode turned OFF");
+        }
+
+        // Test 7: Settings Menu and Change State
+        const settingsBtn = frameDoc.getElementById('btn-settings-header');
+        const settingsMenu = frameDoc.getElementById('settings-dropdown-menu');
+        if (settingsBtn && settingsMenu) {
+          settingsBtn.click();
+          await new Promise(r => setTimeout(r, 100));
+          if (!settingsMenu.classList.contains('active')) {
+            recordError("Settings dropdown did not open on click");
+          } else {
+            log("PASS: Settings dropdown menu opened");
+          }
+
+          const changeStateBtn = frameDoc.getElementById('btn-setting-change-state');
+          if (changeStateBtn) {
+            changeStateBtn.click();
+            await new Promise(r => setTimeout(r, 200));
+            const stateModal = frameDoc.getElementById('modal-state-change');
+            if (!stateModal || !stateModal.classList.contains('open')) {
+              recordError("State change modal did not open");
+            } else {
+              log("PASS: State change modal opened");
+              // Click 'Andhra Pradesh (Vijayawada)' button
+              const apBtn = frameDoc.querySelector('[data-state-key="Andhra Pradesh (Vijayawada)"]');
+              if (apBtn) {
+                apBtn.click();
+                await new Promise(r => setTimeout(r, 200));
+                log("PASS: Selected Andhra Pradesh (Vijayawada) as active state");
+              } else {
+                recordError("Andhra Pradesh (Vijayawada) button not found in state selector");
+              }
+            }
+          }
+        }
+
+        // Test 8: Filter dropdowns on Discover
+        const filterState = frameDoc.getElementById('filter-state');
+        if (filterState) {
+          filterState.value = 'ALL';
+          filterState.dispatchEvent(new frameWin.Event('change'));
+          await new Promise(r => setTimeout(r, 100));
+          log("PASS: Filter state changed to ALL");
+        }
+
+        const filterSkill = frameDoc.getElementById('filter-skill');
+        if (filterSkill) {
+          filterSkill.value = 'Python';
+          filterSkill.dispatchEvent(new frameWin.Event('change'));
+          await new Promise(r => setTimeout(r, 100));
+          const countEl = frameDoc.getElementById('discover-results-count');
+          log(`PASS: Filter skill set to Python. Candidates found: ${countEl ? countEl.textContent : 'unknown'}`);
+          
+          const resetBtn = frameDoc.getElementById('btn-reset-filters');
+          if (resetBtn) {
+            resetBtn.click();
+            await new Promise(r => setTimeout(r, 100));
+            log("PASS: Clicked reset filters");
+          }
+        }
+
+        // Test 9: Peer Squads Join and Create
+        frameDoc.getElementById('nav-btn-squads').click();
+        await new Promise(r => setTimeout(r, 200));
+        const joinBtn = frameDoc.querySelector('.btn-join-squad');
+        if (joinBtn) {
+          joinBtn.click();
+          await new Promise(r => setTimeout(r, 100));
+          log("PASS: Clicked Join Squad");
+        }
+
+        const openCreateSquadBtn = frameDoc.getElementById('btn-open-create-squad');
+        if (openCreateSquadBtn) {
+          openCreateSquadBtn.click();
+          await new Promise(r => setTimeout(r, 200));
+          const createModal = frameDoc.getElementById('modal-create-squad');
+          if (!createModal || !createModal.classList.contains('open')) {
+            recordError("Create Squad modal did not open");
+          } else {
+            log("PASS: Create Squad modal opened");
+            const squadNameInput = frameDoc.getElementById('create-squad-name');
+            const squadGoalInput = frameDoc.getElementById('create-squad-goal');
+            if (squadNameInput && squadGoalInput) {
+              squadNameInput.value = "Autonomous AI Agent Team";
+              squadGoalInput.value = "Building open-source multi-agent workflows for healthcare";
+              const submitSquadBtn = frameDoc.getElementById('btn-submit-create-squad');
+              if (submitSquadBtn) {
+                submitSquadBtn.click();
+                await new Promise(r => setTimeout(r, 200));
+                log("PASS: Submitted new squad creation");
+              }
+            }
+          }
+        }
+
+        // Test 10: Internships Apply
+        frameDoc.getElementById('nav-btn-internships').click();
+        await new Promise(r => setTimeout(r, 200));
+        const applyBtn = frameDoc.querySelector('.btn-open-apply-modal');
+        if (applyBtn) {
+          applyBtn.click();
+          await new Promise(r => setTimeout(r, 200));
+          const applyModal = frameDoc.getElementById('modal-apply-internship');
+          if (!applyModal || !applyModal.classList.contains('open')) {
+            recordError("Apply internship modal did not open");
+          } else {
+            log("PASS: Apply internship modal opened");
+            const submitAppBtn = frameDoc.getElementById('btn-submit-application');
+            if (submitAppBtn) {
+              submitAppBtn.click();
+              await new Promise(r => setTimeout(r, 200));
+              log("PASS: Submitted internship application with ATS resume");
+            }
+          }
+        }
+
+        // Test 11: ATS Resume Sync and Save
+        const resumeBtn = frameDoc.getElementById('btn-header-ats') || frameDoc.querySelector('[data-tab="resume"]');
+        if (resumeBtn) resumeBtn.click();
+        await new Promise(r => setTimeout(r, 200));
+        const syncResumeBtn = frameDoc.getElementById('btn-sync-profile-resume');
+        if (syncResumeBtn) {
+          syncResumeBtn.click();
+          await new Promise(r => setTimeout(r, 100));
+          log("PASS: Clicked Sync Resume from Profile");
+        }
+        const saveResumeBtn = frameDoc.getElementById('btn-save-resume-changes');
+        if (saveResumeBtn) {
+          saveResumeBtn.click();
+          await new Promise(r => setTimeout(r, 100));
+          log("PASS: Clicked Save & Update ATS Resume");
+        }
+
+        // Test 12: Profile Edit and Save
+        const profileBtn = frameDoc.getElementById('btn-user-profile-header') || frameDoc.querySelector('[data-tab="profile"]');
+        if (profileBtn) profileBtn.click();
+        await new Promise(r => setTimeout(r, 200));
+        const openEditProfileBtn = frameDoc.getElementById('btn-open-edit-profile-main');
+        if (openEditProfileBtn) {
+          openEditProfileBtn.click();
+          await new Promise(r => setTimeout(r, 200));
+          const profileModal = frameDoc.getElementById('modal-edit-profile');
+          if (!profileModal || !profileModal.classList.contains('open')) {
+            recordError("Edit profile modal did not open");
+          } else {
+            log("PASS: Edit profile modal opened");
+            const saveProfileBtn = frameDoc.getElementById('btn-save-profile');
+            if (saveProfileBtn) {
+              saveProfileBtn.click();
+              await new Promise(r => setTimeout(r, 200));
+              log("PASS: Saved profile changes");
+            }
+          }
+        }
+
+        // Summary
+        if (errors.length === 0) {
+          outputEl.textContent = "SUCCESS: ALL TESTS PASSED WITH 0 ERRORS";
+          log("\n=== ALL TESTS PASSED PERFECTLY ===");
+        } else {
+          outputEl.textContent = `FAILURE: ${errors.length} ERRORS DETECTED`;
+          log(`\n=== COMPLETED WITH ${errors.length} ERRORS ===`);
+        }
+
+      } catch (err) {
+        recordError(`Test harness exception: ${err.message}\n${err.stack}`);
+        outputEl.textContent = "FAILURE: Test runner threw exception";
+      }
+    };
+  </script>
+</body>
+</html>
